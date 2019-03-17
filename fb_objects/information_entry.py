@@ -1,9 +1,11 @@
+from typing import Dict, Any
+
 from fb_objects.fb_object_base import FbObjectBase
 from webdriver_wrapper import WebDriverWrapper
 
 
 class InformationEntry(FbObjectBase):
-    def __init__(self, name: str, xpath: str, driver: WebDriverWrapper):
+    def __init__(self, name: str, xpath: str, driver: WebDriverWrapper = None):
         super().__init__(driver)
         self._name = name
         self._xpath = xpath
@@ -20,6 +22,18 @@ class InformationEntry(FbObjectBase):
     def parse(self) -> "InformationEntry":
         self._content = self._driver.scrape_text(self._xpath)
         return self
+
+    def serialize(self) -> Dict[str, Any]:
+        serialized = {"name": self._name,
+                      "xpath": self._xpath,
+                      "content": self._content}
+        return serialized
+
+    @classmethod
+    def deserialize(cls, serialized: Dict[str, Any]) -> "InformationEntry":
+        entry = InformationEntry(name=serialized["name"], xpath=serialized["xpath"])
+        entry._content = serialized["content"]
+        return entry
 
     def set_driver(self, driver: WebDriverWrapper) -> "InformationEntry":
         self._driver = driver
