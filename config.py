@@ -1,7 +1,13 @@
-PROFILE_DIR = "./fb_scraper/profiles/"
-CREDENTIALS_PATH = "credentials.json"
+# Webdriver Settings
+WEBDRIVER_PATH = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver"
+BINARY_PATH = "/usr/bin/firefox"
 
+# Storage
+PROFILE_DIR = "./fb_scraper/profiles/"
+
+# Facebook General
 FB_WWW = "https://m.facebook.com/"
+CREDENTIALS_PATH = "credentials.json"
 
 # Login
 USERNAME_XPATH = "//input[@id='m_login_email']"

@@ -3,14 +3,15 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+from config import WEBDRIVER_PATH, BINARY_PATH
+
 
 class WebDriverWrapper(object):
-    def __init__(self, webdriver_path: str = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver",
-                 binary_path: str = "/usr/bin/firefox"):
+    def __init__(self, webdriver_path: str = WEBDRIVER_PATH, binary_path: str = BINARY_PATH):
         self._webdriver_path = webdriver_path
         self._binary_path = binary_path
 
-        self._binary = FirefoxBinary(r'/usr/bin/firefox')
+        self._binary = FirefoxBinary(self._binary_path)
 
         self._caps = DesiredCapabilities.FIREFOX.copy()
         self._caps['marionette'] = True
