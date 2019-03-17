@@ -3,7 +3,8 @@ WEBDRIVER_PATH = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver"
 BINARY_PATH = "/usr/bin/firefox"
 
 # Storage
-PROFILE_DIR = "./fb_scraper/profiles/"
+PROFILE_DIR = "./profiles/"
+PROFILE_SUFFIX = ".json"
 
 # Facebook General
 FB_WWW = "https://m.facebook.com/"

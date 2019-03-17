@@ -1,10 +1,10 @@
 from typing import Dict, Any
 
-from fb_objects.fb_object_base import FbObjectBase
+from fb_objects.fb_object import FbObject
 from webdriver_wrapper import WebDriverWrapper
 
 
-class InformationEntry(FbObjectBase):
+class InformationEntry(FbObject):
     def __init__(self, name: str, xpath: str, driver: WebDriverWrapper = None):
         super().__init__(driver)
         self._name = name

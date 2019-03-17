@@ -1,12 +1,12 @@
 from typing import Any, Dict
 
-from fb_objects.fb_object_base import FbObjectBase
+from fb_objects.fb_object import FbObject
 from fb_objects.information_entry import InformationEntry
 from webdriver_wrapper import WebDriverWrapper
 from config import ENTRIES
 
 
-class Information(FbObjectBase):
+class Information(FbObject):
     registered_entries = []
 
     def __init__(self, webdriver: WebDriverWrapper = None):
@@ -36,6 +36,7 @@ class Information(FbObjectBase):
         information = Information()
         for entry in serialized["entries"]:
             information._entries.append(InformationEntry.deserialize(entry))
+        return information
 
     @classmethod
     def register(cls, name: str, xpath: str):

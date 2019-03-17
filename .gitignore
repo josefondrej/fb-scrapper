@@ -127,3 +127,6 @@ geckodriver.log
 
 # Facebook credentials
 credentials.json
+
+# Profile data
+profiles/*
