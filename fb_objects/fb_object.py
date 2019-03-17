@@ -24,7 +24,7 @@ class FbObject(object):
         if obj is None:
             return None
 
-        if type(obj) == type(list()):
+        if isinstance(obj, list):
             return [i.serialize() for i in obj]
         else:
             return obj.serialize()
@@ -34,7 +34,7 @@ class FbObject(object):
         if obj is None:
             return None
 
-        if type(obj) == type(list()):
+        if isinstance(obj, list):
             return [factory.deserialize(i) for i in obj]
         else:
             return factory.deserialize(obj)
