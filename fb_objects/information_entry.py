@@ -24,3 +24,6 @@ class InformationEntry(FbObjectBase):
     def set_driver(self, driver: WebDriverWrapper) -> "InformationEntry":
         self._driver = driver
         return self
+
+    def copy(self):
+        return InformationEntry(self._name, self._xpath, None)

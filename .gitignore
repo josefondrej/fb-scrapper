@@ -124,3 +124,6 @@ dmypy.json
 
 # Webdriver logs
 geckodriver.log
+
+# Facebook credentials
+credentials.json

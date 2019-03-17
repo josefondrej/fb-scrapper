@@ -1,8 +1,7 @@
-from typing import Dict, List
-
 from fb_objects.fb_object_base import FbObjectBase
 from fb_objects.information_entry import InformationEntry
 from webdriver_wrapper import WebDriverWrapper
+from config import ENTRIES
 
 
 class Information(FbObjectBase):
@@ -16,15 +15,17 @@ class Information(FbObjectBase):
         super().__init__(webdriver)
         self._entries = []
 
-    def parse(self) -> "Information":
+    def parse(self, verbose: bool = False) -> "Information":
+        if verbose:
+            print(f"[{self._username}]")
         for registered_entry in Information.registered_entries:
-            try:
-                entry = registered_entry.copy()
-                entry.set_driver(self._driver)
-                entry.parse()
-                self._entries.append(entry)
-            except Exception as e:
-                pass
+            entry = registered_entry.copy()
+            entry.set_driver(self._driver)
+            entry.parse()
+            self._entries.append(entry)
+            # except Exception as e:
+            #     if verbose:
+            #         print(f"\t `{registered_entry.name}` -- not located")
         return self
 
     def get_entry(self, name: str):
@@ -34,6 +35,5 @@ class Information(FbObjectBase):
         return None
 
 
-Information.register("work", "xpath")
-Information.register("education", "xpath")
-Information.register("relationship", "xpath")
+for entry in ENTRIES:
+    Information.register(entry["name"], entry["xpath"])
