@@ -130,3 +130,7 @@ credentials.json
 
 # Profile data
 profiles/*
+profile_pics/*
+
+# Debugging
+test.py

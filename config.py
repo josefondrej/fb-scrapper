@@ -1,6 +1,8 @@
 # Webdriver Settings
 WEBDRIVER_PATH = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver"
 BINARY_PATH = "/usr/bin/firefox"
+MAX_TIMEOUT = 5 # sec
+REFRESH_RATE = 0.01 # sec
 
 # Storage
 PROFILE_DIR = "./profiles/"
@@ -9,6 +11,7 @@ PROFILE_SUFFIX = ".json"
 # Facebook General
 FB_WWW = "https://m.facebook.com/"
 CREDENTIALS_PATH = "credentials.json"
+PIC_SUFFIX = ".jpg"
 
 # Login
 USERNAME_XPATH = "//input[@id='m_login_email']"
@@ -20,7 +23,10 @@ SKIP_PERMAMENT_LOGIN = "/login/save-device/cancel/?flow=interstitial_nux_retry&a
 INFORMATION_SUFFIX = "/about"
 ALBUMS_SUFFIX = "/photos"
 FRIENDS_SUFFIX = "/friends"
-NAME_XPATH = "//h3"
+NAME_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/span/div/span"
+PROFILE_PIC_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/div/div/a/img"
+SHOW_FULL_SIZE_XPATH = "/html/body/div/div/div[2]/div/div[1]/div/div/div[3]/div[1]/div[2]/span/div/span/a[2]"
+PROFILE_PIC_DIR = "./profile_pics/"
 
 # Information
 ENTRIES = [
