@@ -25,13 +25,12 @@ class InformationEntry(FbObject):
 
     def serialize(self) -> Dict[str, Any]:
         serialized = {"name": self._name,
-                      "xpath": self._xpath,
                       "content": self._content}
         return serialized
 
     @classmethod
     def deserialize(cls, serialized: Dict[str, Any]) -> "InformationEntry":
-        entry = InformationEntry(name=serialized["name"], xpath=serialized["xpath"])
+        entry = InformationEntry(name=serialized["name"], xpath=None)
         entry._content = serialized["content"]
         return entry
 

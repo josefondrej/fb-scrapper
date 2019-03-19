@@ -44,3 +44,8 @@ ENTRIES = [
     {"name": "politics", "xpath": "//div[@id='politics']"},
     {"name": "quote", "xpath": "//div[@id='quote']"}
 ]
+
+# Friends
+FRIEND_USERNAME_XPATH = "//table/tbody/tr/td[2]/a"
+NEXT_FRIENDS_XPATH = "//div[@id='m_more_friends']/a"
+FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic"]

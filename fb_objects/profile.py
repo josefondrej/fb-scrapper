@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 
 from config import FB_WWW, INFORMATION_SUFFIX, ALBUMS_SUFFIX, FRIENDS_SUFFIX, NAME_XPATH, PROFILE_PIC_XPATH, \
-    SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX
+    SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, FILTERED_USERNAMES
 from fb_objects.fb_object import FbObject
 from fb_objects.information import Information
 from fb_objects.album import Album
@@ -79,7 +79,21 @@ class Profile(FbObject):
         return {}  # todo: implement
 
     def _parse_friend_usernames(self) -> List[str]:
-        return []  # todo: implement
+        friend_usernames = []
+        while True:
+            try:
+                friend_elements = self._driver._driver.find_elements_by_xpath(FRIEND_USERNAME_XPATH)
+                links = [e.get_attribute("href") for e in friend_elements]
+                new_usernames = [self._parse_username_from_link(link) for link in links]
+                new_usernames = [username for username in new_usernames if username not in FILTERED_USERNAMES]
+                friend_usernames.extend(new_usernames)
+                self._driver.click(NEXT_FRIENDS_XPATH)
+            except Exception as e:
+                return friend_usernames
+
+    def _parse_username_from_link(self, link: str) -> str:
+        username = link.split("/")[3].split("?")[0]
+        return username
 
     def _parse_name(self):
         self._name = self._driver.scrape_text(NAME_XPATH)
