@@ -31,11 +31,11 @@ def save_event(public_event: PublicEvent):
 
 
 def load_event(name: str) -> PublicEvent:
-    path = PROFILE_DIR + name + PROFILE_SUFFIX
+    path = EVENT_DIR + name + EVENT_SUFFIX
     try:
         serialized_event = json.load(open(path, "r"))
-        profile = PublicEvent.deserialize(serialized_event)
-        return profile
+        public_event = PublicEvent.deserialize(serialized_event)
+        return public_event
     except IOError:
         print(f"[utils] Event `{name}` not in database")
         return None

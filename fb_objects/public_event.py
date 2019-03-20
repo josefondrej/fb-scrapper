@@ -29,7 +29,7 @@ class PublicEvent(FbObject):
                       "invited": self._invited}
         return serialized
 
-    @staticmethod
+    @classmethod
     def deserialize(cls, serialized: Dict[str, Any]) -> "PublicEvent":
         public_event = PublicEvent(serialized["name"])
         public_event._going = serialized["going"]
