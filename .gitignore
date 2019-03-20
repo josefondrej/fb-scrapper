@@ -131,6 +131,9 @@ credentials.json
 # Profile data
 profiles/*
 profile_pics/*
+events/*
 
 # Debugging
 test.py
+test_profile_parsing.py
+event_parsing.py

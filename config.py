@@ -1,12 +1,15 @@
 # Webdriver Settings
 WEBDRIVER_PATH = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver"
 BINARY_PATH = "/usr/bin/firefox"
-MAX_TIMEOUT = 5 # sec
-REFRESH_RATE = 0.01 # sec
+MAX_TIMEOUT = 5  # sec
+REFRESH_RATE = 0.01  # sec
 
 # Storage
 PROFILE_DIR = "./profiles/"
 PROFILE_SUFFIX = ".json"
+EVENT_DIR = "./events/"
+EVENT_SUFFIX = ".json"
+
 
 # Facebook General
 FB_WWW = "https://m.facebook.com/"
@@ -48,4 +51,12 @@ ENTRIES = [
 # Friends
 FRIEND_USERNAME_XPATH = "//table/tbody/tr/td[2]/a"
 NEXT_FRIENDS_XPATH = "//div[@id='m_more_friends']/a"
-FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic"]
+FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic", "messages"]
+
+# Public Event
+GOING_NEXT_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[1]/div[2]/div[11]/a"
+MAYBE_GOING_NEXT_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[2]/div[2]/div[11]/a"
+INVITED_NEXT_XPATH = "todo"
+GOING_USERNAMES_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[1]/a"
+MAYBE_GOING_USERNAMES_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[2]/a"
+INVITED_USERNAMES_XPATH = "todo"

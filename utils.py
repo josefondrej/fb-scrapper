@@ -1,10 +1,9 @@
 import json
-from typing import Tuple
+from typing import Tuple, List
 
-from fb_objects.profile import Profile
 from webdriver_wrapper import WebDriverWrapper
 from config import CREDENTIALS_PATH, FB_WWW, LOGIN_XPATH, USERNAME_XPATH, PASSWORD_XPATH, SKIP_PERMAMENT_LOGIN, \
-    PROFILE_DIR, PROFILE_SUFFIX
+    FILTERED_USERNAMES
 
 
 def load_fb_credentials(credentials_file_path: str) -> Tuple[str, str]:
@@ -25,19 +24,26 @@ def resolve_permanent_login_prompt(driver: WebDriverWrapper):
     driver.go_to(FB_WWW + SKIP_PERMAMENT_LOGIN)
 
 
-# Saving / Loading Data from Disc
-def save_profile(profile: Profile):
-    path = PROFILE_DIR + profile._username + PROFILE_SUFFIX
-    serialized_profile = profile.serialize()
-    json.dump(serialized_profile, open(path, "w"))
+# Username parsing
+def parse_usernames(username_xpath: str, next_button_xpath: str, driver: WebDriverWrapper):
+    usernames = []
+    while True:
+        try:
+            elements = driver._driver.find_elements_by_xpath(username_xpath)
+            links = [e.get_attribute("href") for e in elements]
+            new_usernames = [_parse_username_from_link(link) for link in links]
+            new_usernames = _filter_usernames(new_usernames)
+            usernames.extend(new_usernames)
+            driver.click(next_button_xpath)
+        except Exception as e:
+            return usernames
 
 
-def load_profile(username: str) -> Profile:
-    path = PROFILE_DIR + username + PROFILE_SUFFIX
-    try:
-        serialized_profile = json.load(open(path, "r"))
-        profile = Profile.deserialize(serialized_profile)
-        return profile
-    except IOError:
-        print(f"[utils] Profile `{username}` not in database")
-        return None
+def _filter_usernames(usernames: List[str]):
+    filtered_usernames = [username for username in usernames if username not in FILTERED_USERNAMES]
+    return filtered_usernames
+
+
+def _parse_username_from_link(link: str) -> str:
+    username = link.split("/")[3].split("?")[0]
+    return username
