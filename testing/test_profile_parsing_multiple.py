@@ -29,6 +29,7 @@ class Worker(Thread):
             except Exception as e:
                 print(f"[{self._name}] finished")
                 self._driver.close()
+                self._usernames_lock.release()
                 break
             self._usernames_lock.release()
             try:
