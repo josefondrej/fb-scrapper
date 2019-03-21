@@ -24,6 +24,13 @@ def resolve_permanent_login_prompt(driver: WebDriverWrapper):
     driver.go_to(FB_WWW + SKIP_PERMAMENT_LOGIN)
 
 
+def get_driver() -> WebDriverWrapper:
+    driver = WebDriverWrapper()
+    login_to_facebook(driver)
+    resolve_permanent_login_prompt(driver)
+    return driver
+
+
 # Username parsing
 def parse_usernames(username_xpath: str, next_button_xpath: str, driver: WebDriverWrapper):
     usernames = []

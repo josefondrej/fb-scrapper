@@ -3,10 +3,15 @@ from typing import Any, Dict, List
 from utils import parse_usernames
 from fb_objects.fb_object import FbObject
 from webdriver_wrapper import WebDriverWrapper
-from config import GOING_NEXT_XPATH, MAYBE_GOING_NEXT_XPATH, GOING_USERNAMES_XPATH, MAYBE_GOING_USERNAMES_XPATH
+from config import GOING_NEXT_XPATH, MAYBE_GOING_NEXT_XPATH, GOING_USERNAMES_XPATH, MAYBE_GOING_USERNAMES_XPATH, \
+    EVENT_DIR, EVENT_SUFFIX
 
 
 class PublicEvent(FbObject):
+    _file_dir = EVENT_DIR
+    _file_suffix = EVENT_SUFFIX
+    _file_name_key = "_name"
+
     def __init__(self, name: str, driver: WebDriverWrapper = None):
         super().__init__(driver)
         self._name = name
@@ -18,9 +23,18 @@ class PublicEvent(FbObject):
     def name(self):
         return self._name
 
+    @property
+    def going(self):
+        return self._going
+
+    @property
+    def maybe_going(self):
+        return self._maybe_going
+
     def parse(self):
         self._going = parse_usernames(GOING_USERNAMES_XPATH, GOING_NEXT_XPATH, self._driver)
         self._maybe_going = parse_usernames(MAYBE_GOING_USERNAMES_XPATH, MAYBE_GOING_NEXT_XPATH, self._driver)
+        return self
 
     def serialize(self) -> Dict[str, Any]:
         serialized = {"name": self._name,

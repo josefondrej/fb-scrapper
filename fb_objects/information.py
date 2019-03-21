@@ -15,7 +15,7 @@ class Information(FbObject):
 
     def parse(self, verbose: bool = False) -> "Information":
         if verbose:
-            print(f"[{self._username}]")
+            print(f"[INFO] Parsing ({self._username})")
         for registered_entry in Information.registered_entries:
             try:
                 entry = registered_entry.copy()
@@ -24,7 +24,7 @@ class Information(FbObject):
                 self._entries.append(entry)
             except Exception as e:
                 if verbose:
-                    print(f"\t `{registered_entry.name}` -- not located")
+                    print(f"\t [WARNING] Entry ({registered_entry.name}) not located")
         return self
 
     def serialize(self) -> Dict[str, Any]:

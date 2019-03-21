@@ -1,8 +1,13 @@
-from typing import Dict, Any, Callable
+import json
+from typing import Dict, Any
 from webdriver_wrapper import WebDriverWrapper
 
 
 class FbObject(object):
+    _file_dir = None
+    _file_suffix = None
+    _file_name_key = None
+
     def __init__(self, driver: WebDriverWrapper = None):
         self._driver = driver
 
@@ -18,6 +23,30 @@ class FbObject(object):
     @classmethod
     def deserialize(cls, serialized: Dict[str, Any]) -> "FbObject":
         raise NotImplementedError("Has to be overriden.")
+
+    @classmethod
+    def _path_to_file(cls, key):
+        path = cls._file_dir + key + cls._file_suffix
+        return path
+
+    def _path_to_file(self):
+        return self.__class__._path_to_file(self.__getattribute__(self.__class__._file_name_key))
+
+    def save(self):
+        path = self._path_to_file()
+        serialized_event = self.serialize()
+        json.dump(serialized_event, open(path, "w"))
+
+    @classmethod
+    def load(cls, key: str) -> "FbObject":
+        path = cls._path_to_file(key)
+        try:
+            serialized_event = json.load(open(path, "r"))
+            public_event = cls.deserialize(serialized_event)
+            return public_event
+        except IOError:
+            print(f"[ERROR] Object ({key})[{cls.__name__}] not in database")
+            return None
 
     @classmethod
     def _magic_serialize(cls, obj: "FbObject") -> Dict[str, Any]:

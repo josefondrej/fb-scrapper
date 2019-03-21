@@ -2,7 +2,8 @@ from typing import List, Dict, Any
 
 from utils import parse_usernames
 from config import FB_WWW, INFORMATION_SUFFIX, ALBUMS_SUFFIX, FRIENDS_SUFFIX, NAME_XPATH, PROFILE_PIC_XPATH, \
-    SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, FILTERED_USERNAMES
+    SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, FILTERED_USERNAMES, \
+    MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX
 from fb_objects.fb_object import FbObject
 from fb_objects.information import Information
 from fb_objects.album import Album
@@ -10,6 +11,10 @@ from webdriver_wrapper import WebDriverWrapper
 
 
 class Profile(FbObject):
+    _file_dir = PROFILE_DIR
+    _file_suffix = PROFILE_SUFFIX
+    _file_name_key = "_username"
+
     def __init__(self, username: str, driver: WebDriverWrapper = None):
         super().__init__(driver)
         self._username: str = username
@@ -31,26 +36,17 @@ class Profile(FbObject):
         return self._friends
 
     def parse(self):
-        self._point_driver_to_main_page()
-        self._parse_name()
+        self._point_driver_to(MAIN_PAGE_SUFFIX)
+        self._name = self._parse_name()
         self._download_profile_picture()
 
-        url_information = FB_WWW + self._username + INFORMATION_SUFFIX
-        self._driver.go_to(url_information)
+        self._point_driver_to(INFORMATION_SUFFIX)
         self._information = Information(self._driver).parse()
 
-        url_albums = FB_WWW + self._username + ALBUMS_SUFFIX
-        self._driver.go_to(url_albums)
-        self._albums = []
-        album_links = self._parse_album_links()
-        for name, link in album_links.items():
-            self._driver.go_to(link)
-            album = Album(name=name, driver=self._driver).parse()
-            self._albums.append(album)
-            self._driver.back()
+        self._point_driver_to(ALBUMS_SUFFIX)
+        self._parse_albums()
 
-        url_friends = FB_WWW + self._username + FRIENDS_SUFFIX
-        self._driver.go_to(url_friends)
+        self._point_driver_to(FRIENDS_SUFFIX)
         self._friends = self._parse_friend_usernames()
 
         return self
@@ -61,20 +57,38 @@ class Profile(FbObject):
                       "information": FbObject._magic_serialize(self._information),
                       "albums": FbObject._magic_serialize(self._albums),
                       "friends": self._friends}
+
         return serialized
 
     @classmethod
     def deserialize(cls, serialized: Dict[str, Any]) -> "Profile":
         profile = Profile(username=serialized["username"])
+
         profile._name = serialized["name"]
         profile._information = FbObject._magic_deserialize(serialized["information"], Information)
         profile._albums = FbObject._magic_deserialize(serialized["albums"], Album)
         profile._friends = serialized["friends"]
+
         return profile
 
-    def _point_driver_to_main_page(self):
-        url_information = FB_WWW + self._username
-        self._driver.go_to(url_information)
+    def _point_driver_to(self, page_suffix: str):
+        url_albums = FB_WWW + self._username + page_suffix
+        self._driver.go_to(url_albums)
+
+    def _parse_albums(self) -> List[Album]:
+        albums = []
+        album_links = self._parse_album_links()
+
+        for name, link in album_links.items():
+            try:
+                self._driver.go_to(link)
+                album = Album(name=name, driver=self._driver).parse()
+                self.albums.append(album)
+                self._driver.back()
+            except Exception as e:
+                print(f"[ERROR] Parsing album ({name}) of ({self._username})")
+
+        return albums
 
     def _parse_album_links(self) -> Dict[str, str]:
         return {}  # todo: implement
@@ -83,15 +97,23 @@ class Profile(FbObject):
         friend_usernames = parse_usernames(FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, self._driver)
         return friend_usernames
 
-    def _parse_name(self):
-        self._name = self._driver.scrape_text(NAME_XPATH)
+    def _parse_name(self) -> str:
+        name = None
+        try:
+            name = self._driver.scrape_text(NAME_XPATH)
+        except Exception as e:
+            print(f"[ERROR] Downloading name for ({self._username})")
+        return name
 
     def _download_profile_picture(self):
-        self._driver.click(PROFILE_PIC_XPATH)
-        self._driver.click(SHOW_FULL_SIZE_XPATH)
+        try:
+            self._driver.click(PROFILE_PIC_XPATH)
+            self._driver.click(SHOW_FULL_SIZE_XPATH)
 
-        if self._driver.focus_on_window(1):
-            profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
-            self._driver.download_image(target_file=profile_pic_path)
-            self._driver.close_tab()
-        self._driver.focus_on_window(0)
+            if self._driver.focus_on_window(1):
+                profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
+                self._driver.download_image(target_file=profile_pic_path)
+                self._driver.close_tab()
+            self._driver.focus_on_window(0)
+        except Exception as e:
+            print(f"[ERROR] Downloading profile picture ({self._username})")

@@ -12,7 +12,7 @@ class Album(FbObject):
         self._photos: List[Photo] = None
 
     def parse(self):
-        pass # todo: implement
+        pass  # todo: implement
 
     def serialize(self) -> Dict[str, Any]:
         serialized = {"name": self._name, "photos": [photo.serialize() for photo in self._photos]}

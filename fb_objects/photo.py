@@ -8,8 +8,8 @@ class Photo(FbObject):
     def __init__(self, driver: WebDriverWrapper = None):
         super().__init__(driver)
 
-    def parse(self):
-        pass  # todo: implement
+    def parse(self) -> "Photo":
+        return self # todo: implement
 
     def serialize(self) -> Dict[str, Any]:
         serialized = {}

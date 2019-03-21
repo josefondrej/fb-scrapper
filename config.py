@@ -26,9 +26,10 @@ SKIP_PERMAMENT_LOGIN = "/login/save-device/cancel/?flow=interstitial_nux_retry&a
 INFORMATION_SUFFIX = "/about"
 ALBUMS_SUFFIX = "/photos"
 FRIENDS_SUFFIX = "/friends"
+MAIN_PAGE_SUFFIX = ""
 NAME_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/span/div/span"
 PROFILE_PIC_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/div/div/a/img"
-SHOW_FULL_SIZE_XPATH = "/html/body/div/div/div[2]/div/div[1]/div/div/div[3]/div[1]/div[2]/span/div/span/a[2]"
+SHOW_FULL_SIZE_XPATH = "/html/body/div/div/div[2]/div/div[1]/div/div/div[3]/div[1]/div[2]/span/div/span/a[1]"
 PROFILE_PIC_DIR = "./profile_pics/"
 
 # Information
@@ -51,7 +52,7 @@ ENTRIES = [
 # Friends
 FRIEND_USERNAME_XPATH = "//table/tbody/tr/td[2]/a"
 NEXT_FRIENDS_XPATH = "//div[@id='m_more_friends']/a"
-FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic", "messages"]
+FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic", "messages", "profile.php", "events"]
 
 # Public Event
 GOING_NEXT_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[1]/div[2]/div[11]/a"
