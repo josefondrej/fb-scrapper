@@ -2,7 +2,7 @@ from fb_objects.profile import Profile
 from fb_objects.public_event import PublicEvent
 from utils import get_driver
 
-event_name = ""
+event_name = "event_name"
 
 driver = get_driver()
 

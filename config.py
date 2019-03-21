@@ -1,8 +1,8 @@
 # Webdriver Settings
 WEBDRIVER_PATH = "/home/josef/Downloads/geckodriver-v0.24.0-linux64/geckodriver"
 BINARY_PATH = "/usr/bin/firefox"
-MAX_TIMEOUT = 5  # sec
-REFRESH_RATE = 0.01  # sec
+MAX_TIMEOUT = 3  # sec
+REFRESH_RATE = 0.02  # sec
 
 # Storage
 PROFILE_DIR = "./profiles/"

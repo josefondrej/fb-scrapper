@@ -29,23 +29,25 @@ class FbObject(object):
         path = cls._file_dir + key + cls._file_suffix
         return path
 
-    def _path_to_file(self):
-        return self.__class__._path_to_file(self.__getattribute__(self.__class__._file_name_key))
+    @property
+    def _key(self):
+        return self.__getattribute__(self.__class__._file_name_key)
 
     def save(self):
-        path = self._path_to_file()
+        path = self.__class__._path_to_file(self._key)
         serialized_event = self.serialize()
         json.dump(serialized_event, open(path, "w"))
 
     @classmethod
-    def load(cls, key: str) -> "FbObject":
+    def load(cls, key: str, verbose=False) -> "FbObject":
         path = cls._path_to_file(key)
         try:
             serialized_event = json.load(open(path, "r"))
             public_event = cls.deserialize(serialized_event)
             return public_event
         except IOError:
-            print(f"[ERROR] Object ({key})[{cls.__name__}] not in database")
+            if verbose:
+                print(f"[ERROR] Object ({key})[{cls.__name__}] not in database")
             return None
 
     @classmethod

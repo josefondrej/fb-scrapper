@@ -1,7 +1,7 @@
 from fb_objects.profile import Profile
 from utils import get_driver
 
-username = ""
+username = "someones.name"
 
 driver = get_driver()
 
