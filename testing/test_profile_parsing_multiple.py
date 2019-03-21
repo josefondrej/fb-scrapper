@@ -27,7 +27,7 @@ class Worker(Thread):
             try:
                 username = self._usernames.pop()
             except Exception as e:
-                print("[{self._name}] finished")
+                print(f"[{self._name}] finished")
                 self._driver.close()
                 break
             self._usernames_lock.release()
