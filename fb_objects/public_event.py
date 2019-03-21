@@ -31,6 +31,10 @@ class PublicEvent(FbObject):
     def maybe_going(self):
         return self._maybe_going
 
+    @property
+    def all_usernames(self):
+        return self._going + self._maybe_going
+
     def parse(self):
         self._going = parse_usernames(GOING_USERNAMES_XPATH, GOING_NEXT_XPATH, self._driver)
         self._maybe_going = parse_usernames(MAYBE_GOING_USERNAMES_XPATH, MAYBE_GOING_NEXT_XPATH, self._driver)

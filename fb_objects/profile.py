@@ -24,6 +24,14 @@ class Profile(FbObject):
         self._friends: List[str] = None
 
     @property
+    def name(self):
+        return self._name
+
+    @property
+    def username(self):
+        return self._username
+
+    @property
     def information(self) -> Information:
         return self._information
 

@@ -48,5 +48,5 @@ if __name__ == "__main__":
     usernames_lock = Lock()
 
     for i in range(WORKERS):
-        worker = Worker(str(i), usernames, usernames_lock)
+        worker = Worker("worker " + str(i), usernames, usernames_lock)
         worker.start()
