@@ -1,15 +1,9 @@
 from threading import Thread, Lock
-from typing import List
+from typing import List, Tuple
 
 from fb_objects.profile import Profile
 from fb_objects.public_event import PublicEvent
 from utils import get_driver
-
-
-def load_event_usernames(event_name: str) -> List[str]:
-    event = PublicEvent.load(event_name)
-    usernames = event.going + event.maybe_going
-    return usernames
 
 
 class Worker(Thread):
@@ -41,12 +35,26 @@ class Worker(Thread):
                 print(f"[ERROR] Parsing ({username})")
 
 
-if __name__ == "__main__":
-    WORKERS = 10
+def argparse() -> Tuple[str, str]:
+    import argparse
 
-    usernames = load_event_usernames("event_name")
+    parser = argparse.ArgumentParser(description="Parse profiles of people attending some event")
+    parser.add_argument("--event-name", help="Name of the event")
+    parser.add_argument("--workers", help="Number of threads to use", default=10)
+
+    args = parser.parse_args()
+
+    num_workers = args.workers
+    event_name = args.event_name
+
+    return event_name, num_workers
+
+
+if __name__ == "__main__":
+    event_name, num_workers = argparse()
+    usernames = PublicEvent.load(event_name).all_usernames
     usernames_lock = Lock()
 
-    for i in range(WORKERS):
+    for i in range(num_workers):
         worker = Worker("worker " + str(i), usernames, usernames_lock)
         worker.start()
