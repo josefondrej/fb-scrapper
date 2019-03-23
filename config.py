@@ -13,6 +13,7 @@ EVENT_SUFFIX = ".json"
 
 # Facebook General
 FB_WWW = "https://m.facebook.com/"
+FB_WWW_REGULAR = "https://www.facebook.com/"
 CREDENTIALS_PATH = "credentials.json"
 PIC_SUFFIX = ".jpg"
 
