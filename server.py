@@ -13,7 +13,6 @@ profile_server = None
 
 @app.route("/", methods=["GET"])
 def home():
-
     ptr = request.args.get("pointer")
     if ptr is not None:
         if ptr == "prev":
@@ -26,7 +25,15 @@ def home():
         profile = profile_server.get_next()
 
     link = FB_WWW_REGULAR + profile.username
+
     img_path = PROFILE_PIC_DIR + profile.username + PIC_SUFFIX
+
+    try:
+        with open(img_path, "rb"):
+            pass
+    except IOError:
+        img_path = "static/no_image.jpg"
+
     return render_template("main.html", name=profile.name, username=profile.username, link=link, img_path=img_path)
 
 
