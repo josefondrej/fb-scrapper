@@ -9,9 +9,15 @@ class ProfileServer(object):
         self._index = 0
         self._current_profile = None
 
-    def get_next(self) -> Profile:
+    def _get(self, shift: int):
+        self._index += shift
+        self._index = self._index % len(self._usernames)
         username = self._usernames[self._index]
         self._current_profile = Profile.load(username)
-        self._index += 1
-        self._index = self._index % len(self._usernames)
         return self._current_profile
+
+    def get_next(self) -> Profile:
+        return self._get(+1)
+
+    def get_prev(self) -> Profile:
+        return self._get(-1)

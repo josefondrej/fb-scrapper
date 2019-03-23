@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from config import FB_WWW_REGULAR, PIC_SUFFIX, PROFILE_PIC_DIR
 from fb_objects.public_event import PublicEvent
@@ -11,9 +11,20 @@ public_event = None
 profile_server = None
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
-    profile = profile_server.get_next()
+
+    ptr = request.args.get("pointer")
+    if ptr is not None:
+        if ptr == "prev":
+            profile = profile_server.get_prev()
+        elif ptr == "next":
+            profile = profile_server.get_next()
+        else:
+            profile = profile_server.get_next()
+    else:
+        profile = profile_server.get_next()
+
     link = FB_WWW_REGULAR + profile.username
     img_path = PROFILE_PIC_DIR + profile.username + PIC_SUFFIX
     return render_template("main.html", name=profile.name, username=profile.username, link=link, img_path=img_path)

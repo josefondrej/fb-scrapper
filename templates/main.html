@@ -3,14 +3,28 @@
 
 <head>
     <title>Profile Viewer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css.css') }}">
 </head>
 
 <body>
 
-<a href="{{ link }}">
-    <h1>{{ name }}</h1>
-    <img src="{{ img_path }}">
-</a>
+<center>
+    <div id="env">
+        <div id="navbar">
+            <a href="/?pointer=prev"><< previous</a>
+            <a href="/?pointer=next">next >></a>
+        </div>
+        <div id="main">
+            <div id="photo">
+                <a href="{{ link }}"><img src="{{ img_path }}" width="600px"></a>
+            </div>
+            <div id="stats">
+                <h1>{{ name }}</h1>
+                <a href="{{ link }}">{{ link }}</a>
+            </div>
+        </div>
+    </div>
+</center>
 
 </body>
 
