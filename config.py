@@ -30,7 +30,7 @@ MAIN_PAGE_SUFFIX = ""
 NAME_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/span/div/span"
 PROFILE_PIC_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/div/div/a/img"
 SHOW_FULL_SIZE_XPATH = "/html/body/div/div/div[2]/div/div[1]/div/div/div[3]/div[1]/div[2]/span/div/span/a[1]"
-PROFILE_PIC_DIR = "./profile_pics/"
+PROFILE_PIC_DIR = "./static/profile_pics/"
 
 # Information
 ENTRIES = [

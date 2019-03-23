@@ -132,6 +132,7 @@ credentials.json
 profiles
 profile_pics
 events
+static/profile_pics
 
 # Debugging
 backup
