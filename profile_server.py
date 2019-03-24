@@ -16,7 +16,7 @@ class ProfileServer(object):
 
     def _initialize_filters(self, path: str):
         try:
-            with open(path, "rb") as file:
+            with open(path, "r") as file:
                 self._filters = json.load(file)
         except IOError:
             self._filters = {"ignore": [], "must_contain": [], "cant_contain": [],
@@ -28,9 +28,14 @@ class ProfileServer(object):
     def _get_keywords(self, profile: Profile) -> Dict[Profile, List[str]]:
         return self._profile_keywords[profile]
 
-    def _export_filters(self, path: str):
-        with open(path, "wb") as file:
+    def export_filters(self, path: str = None):
+        if path is None:
+            path = self._filters_path
+        with open(path, "w") as file:
             json.dump(self._filters, file)
+
+    def update_ignore(self, keyword: str):
+        self._filters["ignore"].append(keyword)
 
     def _satisfies_filters(self, profile: Profile) -> bool:
         profile_keywords = self._get_profile_keywords(profile)

@@ -14,18 +14,20 @@ profile_server = None
 @app.route("/", methods=["GET"])
 def home():
     ptr = request.args.get("pointer")
-    if ptr is not None:
-        if ptr == "prev":
-            profile = profile_server.get_prev()
-        elif ptr == "next":
-            profile = profile_server.get_next()
-        else:
-            profile = profile_server.get_next()
-    else:
-        profile = profile_server.get_next()
+    ignore = request.args.get("ignore")
+
+    if ignore is not None:
+        profile_server.update_ignore(ignore)
+        profile_server.export_filters()
+
+    logic = {"prev": profile_server.get_prev,
+             "next": profile_server.get_next,
+             None: profile_server.get_next}
+
+    profile = logic[ptr]()
 
     link = FB_WWW_REGULAR + profile.username
-
+    keywords = profile_server._get_keywords(profile)
     img_path = PROFILE_PIC_DIR + profile.username + PIC_SUFFIX
 
     try:
@@ -34,7 +36,12 @@ def home():
     except IOError:
         img_path = "static/no_image.jpg"
 
-    return render_template("main.html", name=profile.name, username=profile.username, link=link, img_path=img_path)
+    return render_template("main.html",
+                           name=profile.name,
+                           username=profile.username,
+                           link=link,
+                           img_path=img_path,
+                           keywords=keywords)
 
 
 def argparse() -> str:

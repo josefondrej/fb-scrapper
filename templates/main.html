@@ -21,6 +21,10 @@
             <div id="stats">
                 <h1>{{ name }}</h1>
                 <a href="{{ link }}">{{ link }}</a>
+                <br>
+                {% for keyword in keywords %}
+                <a href="/?ignore={{ keyword }}" class="keyword">{{ keyword }}</a>
+                {% endfor %}
             </div>
         </div>
     </div>

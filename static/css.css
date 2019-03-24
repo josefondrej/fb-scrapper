@@ -52,4 +52,15 @@ a {
   width: 380px;
   text-align: left;
   padding-left: 20px;
+  font-family: sans-serif;
+  line-height: 30px;
+}
+
+.keyword {
+  background: #fff;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size: 12px;
+  color: #000;
+  margin: 5px;
 }
