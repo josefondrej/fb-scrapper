@@ -54,7 +54,7 @@ class ProfileServer(object):
 
         return False
 
-    def _parse_entry_keywords(self, entry) -> Set[str]:
+    def _get_entry_keywords(self, entry) -> Set[str]:
         keywords = entry.content.split("\n")
         keywords = [k for k in keywords if k not in self._filters["ignore"]]
         return set(keywords)
@@ -62,7 +62,7 @@ class ProfileServer(object):
     def _get_profile_keywords(self, profile: Profile) -> Set[str]:
         keywords = set()
         for entry in profile.information.entries:
-            keywords.update(self._parse_entry_keywords(entry))
+            keywords.update(self._get_entry_keywords(entry))
 
         return keywords
 
