@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from fb_objects.fb_object import FbObject
 from fb_objects.information_entry import InformationEntry
@@ -12,6 +12,10 @@ class Information(FbObject):
     def __init__(self, webdriver: WebDriverWrapper = None):
         super().__init__(webdriver)
         self._entries = []
+
+    @property
+    def entries(self) -> List[InformationEntry]:
+        return self._entries
 
     def parse(self, verbose: bool = False) -> "Information":
         if verbose:

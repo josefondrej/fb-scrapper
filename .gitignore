@@ -137,3 +137,6 @@ static/profile_pics
 # Debugging
 backup
 testing
+
+# Server filters
+filters.json

@@ -54,3 +54,9 @@ def _filter_usernames(usernames: List[str]):
 def _parse_username_from_link(link: str) -> str:
     username = link.split("/")[3].split("?")[0]
     return username
+
+
+# General
+def flatten(lst: List[List]) -> List:
+    flat_list = [item for sublist in lst for item in sublist]
+    return flat_list
