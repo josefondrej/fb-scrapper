@@ -13,6 +13,9 @@ class ProfileServer(object):
 
         self._initialize_filters(self._filters_path)
         self._initialize_profile_keywords()
+        self._initialize_friends_going()
+
+        self.get_next()
 
     def _initialize_filters(self, path: str):
         try:
@@ -25,8 +28,22 @@ class ProfileServer(object):
     def _initialize_profile_keywords(self):
         self._profile_keywords = {profile: self._get_profile_keywords(profile) for profile in self._profiles}
 
-    def _get_keywords(self, profile: Profile) -> Dict[Profile, List[str]]:
+    def get_keywords(self, profile: Profile) -> Dict[Profile, List[str]]:
         return self._profile_keywords[profile]
+
+    def _friends_going(self, profile: Profile) -> List[str]:
+        friends_going = []
+        for username in self._usernames:
+            if username in profile.friends:
+                friends_going.append(username)
+
+        return friends_going
+
+    def _initialize_friends_going(self):
+        self._profile_friends_going = {profile: self._friends_going(profile) for profile in self._profiles}
+
+    def get_friends_going(self, profile: Profile) -> List[str]:
+        return self._profile_friends_going[profile]
 
     def export_filters(self, path: str = None):
         if path is None:
@@ -91,3 +108,14 @@ class ProfileServer(object):
 
     def get_prev(self) -> Profile:
         return self._get(-1)
+
+    def get_username(self, username: str):
+        for i in range(len(self._profiles)):
+            profile = self._profiles[i]
+            if profile.username == username:
+                self._index = i
+                return profile
+
+    def current(self) -> Profile:
+        current_profile = self._profiles[self._index]
+        return current_profile

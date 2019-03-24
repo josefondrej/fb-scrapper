@@ -15,19 +15,25 @@ profile_server = None
 def home():
     ptr = request.args.get("pointer")
     ignore = request.args.get("ignore")
+    username = request.args.get("username")
 
     if ignore is not None:
         profile_server.update_ignore(ignore)
         profile_server.export_filters()
 
-    logic = {"prev": profile_server.get_prev,
-             "next": profile_server.get_next,
-             None: profile_server.get_next}
+    profile = profile_server.current()
 
-    profile = logic[ptr]()
+    if ptr is not None:
+        logic = {"prev": profile_server.get_prev,
+                 "next": profile_server.get_next}
+        profile = logic[ptr]()
+
+    if username is not None:
+        profile = profile_server.get_username(username)
 
     link = FB_WWW_REGULAR + profile.username
-    keywords = profile_server._get_keywords(profile)
+    keywords = profile_server.get_keywords(profile)
+    friends_going = profile_server.get_friends_going(profile)
     img_path = PROFILE_PIC_DIR + profile.username + PIC_SUFFIX
 
     try:
@@ -41,7 +47,8 @@ def home():
                            username=profile.username,
                            link=link,
                            img_path=img_path,
-                           keywords=keywords)
+                           keywords=keywords,
+                           friends_going=friends_going)
 
 
 def argparse() -> str:

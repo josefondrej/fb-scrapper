@@ -20,8 +20,15 @@
             </div>
             <div id="stats">
                 <h1>{{ name }}</h1>
+                <h2>[ {{ username }} ]</h2>
                 <a href="{{ link }}">{{ link }}</a>
                 <br>
+                <h2>Friends Going</h2>
+                {% for friend in friends_going %}
+                <a href="/?username={{ friend }}"  class="keyword">{{ friend }}</a>
+                {% endfor %}
+                <br>
+                <h2>Keywords</h2>
                 {% for keyword in keywords %}
                 <a href="/?ignore={{ keyword }}" class="keyword">{{ keyword }}</a>
                 {% endfor %}
