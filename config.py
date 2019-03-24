@@ -4,6 +4,7 @@ BINARY_PATH = "/usr/bin/firefox"
 MAX_TIMEOUT = 3  # sec
 REFRESH_RATE = 0.02  # sec
 
+
 # Storage
 PROFILE_DIR = "./profiles/"
 PROFILE_SUFFIX = ".json"
@@ -17,11 +18,13 @@ FB_WWW_REGULAR = "https://www.facebook.com/"
 CREDENTIALS_PATH = "credentials.json"
 PIC_SUFFIX = ".jpg"
 
+
 # Login
 USERNAME_XPATH = "//input[@id='m_login_email']"
 PASSWORD_XPATH = "//input[@type='password']"
 LOGIN_XPATH = "//input[@name='login']"
 SKIP_PERMAMENT_LOGIN = "/login/save-device/cancel/?flow=interstitial_nux_retry&amp;nux_source=regular_login"
+
 
 # Profile
 INFORMATION_SUFFIX = "/about"
@@ -32,6 +35,8 @@ NAME_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/span/div/sp
 PROFILE_PIC_XPATH = "/html/body/div/div/div[2]/div/div[1]/div[1]/div[2]/div/div/div/a/img"
 SHOW_FULL_SIZE_XPATH = "/html/body/div/div/div[2]/div/div[1]/div/div/div[3]/div[1]/div[2]/span/div/span/a[1]"
 PROFILE_PIC_DIR = "./static/profile_pics/"
+LARGE_PROFILE_PIC_XPATH = "//img[starts-with(@src, 'https://scontent')]"
+
 
 # Information
 ENTRIES = [
@@ -50,10 +55,12 @@ ENTRIES = [
     {"name": "quote", "xpath": "//div[@id='quote']"}
 ]
 
+
 # Friends
 FRIEND_USERNAME_XPATH = "//table/tbody/tr/td[2]/a"
 NEXT_FRIENDS_XPATH = "//div[@id='m_more_friends']/a"
 FILTERED_USERNAMES = ["policies", "bugnub", "logout.php", "mbasic", "messages", "profile.php", "events"]
+
 
 # Public Event
 GOING_NEXT_XPATH = "/html/body/div/div/div[2]/div/table/tbody/tr/td/div[1]/div[2]/div[11]/a"

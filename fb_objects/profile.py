@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 from utils import parse_usernames
 from config import FB_WWW, INFORMATION_SUFFIX, ALBUMS_SUFFIX, FRIENDS_SUFFIX, NAME_XPATH, PROFILE_PIC_XPATH, \
     SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, \
-    MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX
+    MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX, LARGE_PROFILE_PIC_XPATH
 from fb_objects.fb_object import FbObject
 from fb_objects.information import Information
 from fb_objects.album import Album
@@ -116,12 +116,10 @@ class Profile(FbObject):
     def _download_profile_picture(self):
         try:
             self._driver.click(PROFILE_PIC_XPATH)
-            self._driver.click(SHOW_FULL_SIZE_XPATH)
 
-            if self._driver.focus_on_window(1):
-                profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
-                self._driver.download_image(target_file=profile_pic_path)
-                self._driver.close_tab()
-            self._driver.focus_on_window(0)
+            profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
+            self._driver.download_image(profile_pic_path, xpath=LARGE_PROFILE_PIC_XPATH)
+            self._driver.back()
+
         except Exception as e:
             print(f"[ERROR] Downloading profile picture ({self._username})")
