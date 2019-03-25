@@ -96,7 +96,7 @@ class ProfileServer(object):
         k = 0
         while k <= len(self._profiles):
             self._index += shift
-            self._index = self._index % len(self._usernames)
+            self._index = self._index % len(self._profiles)
             profile = self._profiles[self._index]
             if self._satisfies_filters(profile):
                 return profile
