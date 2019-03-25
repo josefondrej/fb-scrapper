@@ -87,7 +87,8 @@ class ProfileServer(object):
         profiles = []
         for username in usernames:
             profile = Profile.load(username)
-            profiles.append(profile)
+            if profile is not None:
+                profiles.append(profile)
 
         return profiles
 
