@@ -47,7 +47,7 @@ def argparse() -> Tuple[str, str]:
     num_workers = args.workers
     event_name = args.event_name
 
-    return event_name, num_workers
+    return event_name, int(num_workers)
 
 
 if __name__ == "__main__":
