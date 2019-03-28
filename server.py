@@ -16,12 +16,17 @@ def home():
     ptr = request.args.get("pointer")
     ignore = request.args.get("ignore")
     username = request.args.get("username")
+    star = request.args.get("star")
 
     if ignore is not None:
         profile_server.update_ignore(ignore)
         profile_server.export_filters()
 
     profile = profile_server.current()
+
+    if star is not None:
+        profile_server.current().annotate(1)
+        profile_server.current().save()
 
     if ptr is not None:
         logic = {"prev": profile_server.get_prev,

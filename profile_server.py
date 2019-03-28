@@ -23,7 +23,8 @@ class ProfileServer(object):
                 self._filters = json.load(file)
         except IOError:
             self._filters = {"ignore": [], "must_contain": [], "cant_contain": [],
-                             "entries": ["basic-info", "education", "relationship"]}
+                             "entries": ["basic-info", "education", "relationship"],
+                             "min-value": None}
 
     def _initialize_profile_keywords(self):
         self._profile_keywords = {profile: self._get_profile_keywords(profile) for profile in self._profiles}
@@ -55,6 +56,11 @@ class ProfileServer(object):
         self._filters["ignore"].append(keyword)
 
     def _satisfies_filters(self, profile: Profile) -> bool:
+        min_value = self._filters.get("min-value")
+        if min_value is not None:
+            if profile._annotation is None or profile._annotation.value < min_value:
+                return False
+
         profile_keywords = self._get_profile_keywords(profile)
 
         for keyword in self._filters["cant_contain"]:

@@ -1,8 +1,9 @@
 from typing import List, Dict, Any
 
+from fb_objects.annotation import Annotation
 from utils import parse_usernames
 from config import FB_WWW, INFORMATION_SUFFIX, ALBUMS_SUFFIX, FRIENDS_SUFFIX, NAME_XPATH, PROFILE_PIC_XPATH, \
-    SHOW_FULL_SIZE_XPATH, PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, \
+    PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, \
     MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX, LARGE_PROFILE_PIC_XPATH
 from fb_objects.fb_object import FbObject
 from fb_objects.information import Information
@@ -22,6 +23,7 @@ class Profile(FbObject):
         self._information: Information = None
         self._albums: List[Album] = None
         self._friends: List[str] = None
+        self._annotation: Annotation = None
 
     @property
     def name(self):
@@ -64,7 +66,8 @@ class Profile(FbObject):
                       "name": self._name,
                       "information": FbObject._magic_serialize(self._information),
                       "albums": FbObject._magic_serialize(self._albums),
-                      "friends": self._friends}
+                      "friends": self._friends,
+                      "annotation": self._annotation.serialize()}
 
         return serialized
 
@@ -76,8 +79,14 @@ class Profile(FbObject):
         profile._information = FbObject._magic_deserialize(serialized["information"], Information)
         profile._albums = FbObject._magic_deserialize(serialized["albums"], Album)
         profile._friends = serialized["friends"]
+        profile._annotation = Annotation.deserialize(serialized.get("annotation"))
 
         return profile
+
+    def annotate(self, value: int = 0):
+        if self._annotation is None:
+            self._annotation = Annotation()
+        self._annotation._value += value
 
     def _point_driver_to(self, page_suffix: str):
         url_albums = FB_WWW + self._username + page_suffix
