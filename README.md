@@ -1,4 +1,4 @@
-Facebook Scrapper 
+Facebook Scrapper and Profile Viewer
 =================
 
 Create the following directories in the root:  
@@ -13,4 +13,8 @@ Add your facebook credentials to `credentials.json` file (see `credentials_templ
 You can run some examples using scripts in `examples` directory. Try for example 
 ```
 python parse_profile.py --help
+```
+To view the profiles belonging to some event run 
+```buildoutcfg
+python server.py --event-name="some name"
 ```
