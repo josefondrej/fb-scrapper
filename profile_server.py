@@ -58,7 +58,7 @@ class ProfileServer(object):
     def _satisfies_filters(self, profile: Profile) -> bool:
         min_value = self._filters.get("min-value")
         if min_value is not None:
-            if profile._annotation is None or profile._annotation.value < min_value:
+            if profile._annotation is not None and profile._annotation.value < min_value:
                 return False
 
         profile_keywords = self._get_profile_keywords(profile)

@@ -26,7 +26,9 @@ def home():
 
     if star is not None:
         profile_server.current().annotate(1)
-        profile_server.current().save()
+    else:
+        profile_server.current().annotate(0)
+    profile_server.current().save()
 
     if ptr is not None:
         logic = {"prev": profile_server.get_prev,
