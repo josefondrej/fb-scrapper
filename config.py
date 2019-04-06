@@ -10,6 +10,7 @@ PROFILE_DIR = "./profiles/"
 PROFILE_SUFFIX = ".json"
 EVENT_DIR = "./events/"
 EVENT_SUFFIX = ".json"
+WORKER_POOL_CACHE = "./worker_pool_cache.json"
 
 
 # Facebook General

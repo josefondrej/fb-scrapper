@@ -1,14 +1,21 @@
 import json
+import os
 from typing import Tuple, List
 
 from webdriver_wrapper import WebDriverWrapper
 from config import CREDENTIALS_PATH, FB_WWW, LOGIN_XPATH, USERNAME_XPATH, PASSWORD_XPATH, SKIP_PERMAMENT_LOGIN, \
-    FILTERED_USERNAMES
+    FILTERED_USERNAMES, PROFILE_DIR, PROFILE_SUFFIX
 
 
 def load_fb_credentials(credentials_file_path: str) -> Tuple[str, str]:
     credentials = json.load(open(credentials_file_path, "rb"))
     return credentials.get("username"), credentials.get("password")
+
+
+def list_usernames() -> List[str]:
+    raw_usernames = os.listdir(PROFILE_DIR)
+    usernames = [username.split(PROFILE_SUFFIX)[0] for username in raw_usernames]
+    return usernames
 
 
 # Facebook Login

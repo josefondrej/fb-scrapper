@@ -61,6 +61,10 @@ class Profile(FbObject):
 
         return self
 
+    def _parse_information(self):
+        self._point_driver_to(INFORMATION_SUFFIX)
+        self._information = Information(self._driver).parse()
+
     def serialize(self) -> Dict[str, Any]:
         serialized = {"username": self._username,
                       "name": self._name,

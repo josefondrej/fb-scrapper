@@ -140,3 +140,8 @@ testing
 
 # Server filters
 filters.json
+
+# Recursive crawler cache
+worker_pool_cache.json
+
+# Specific
