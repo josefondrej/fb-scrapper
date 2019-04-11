@@ -50,6 +50,9 @@ class FbObject(object):
                 print(f"[ERROR] Object ({key})[{cls.__name__}] not in database")
             return None
 
+    def set_driver(self, driver: WebDriverWrapper):
+        self._driver = driver
+
     @classmethod
     def _magic_serialize(cls, obj: "FbObject") -> Dict[str, Any]:
         if obj is None:

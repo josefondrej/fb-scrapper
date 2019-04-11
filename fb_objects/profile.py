@@ -24,6 +24,7 @@ class Profile(FbObject):
         self._albums: List[Album] = None
         self._friends: List[str] = None
         self._annotation: Annotation = None
+        self._changed: bool = False
 
     @property
     def name(self):
@@ -45,21 +46,39 @@ class Profile(FbObject):
     def friends(self) -> "List[str]":
         return self._friends
 
+    @property
+    def changed(self):
+        return self._changed
+
     def parse(self):
-        self._point_driver_to(MAIN_PAGE_SUFFIX)
-        self._name = self._parse_name()
-        self._download_profile_picture()
+        self._changed = False
+        if not self._name:
+            self._point_driver_to(MAIN_PAGE_SUFFIX)
+            self._name = self._parse_name()
+            self._download_profile_picture()
+            self._changed = True
 
-        self._point_driver_to(INFORMATION_SUFFIX)
-        self._information = Information(self._driver).parse()
+        if not self._information:
+            self._point_driver_to(INFORMATION_SUFFIX)
+            self._information = Information(self._driver).parse()
+            self._changed = True
 
-        self._point_driver_to(ALBUMS_SUFFIX)
-        self._parse_albums()
+        if not self._albums:
+            self._point_driver_to(ALBUMS_SUFFIX)
+            self._parse_albums()
+            self._changed = True
 
-        self._point_driver_to(FRIENDS_SUFFIX)
-        self._friends = self._parse_friend_usernames()
+        if not self._friends:
+            self._point_driver_to(FRIENDS_SUFFIX)
+            self._friends = self._parse_friend_usernames()
+            self._changed = True
 
         return self
+
+    def parse_anonymous(self):
+        self._changed = False
+        if not self._name:
+            self._download_profile_picture_anonymous()
 
     def _parse_information(self):
         self._point_driver_to(INFORMATION_SUFFIX)
@@ -137,7 +156,7 @@ class Profile(FbObject):
         except:
             print(f"[ERROR] Downloading profile picture ({self._username})")
 
-    def download_profile_picture_anonymous(self):
+    def _download_profile_picture_anonymous(self):
         try:
             profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
             self._driver.go_to(FB_WWW_REGULAR + self._username)

@@ -31,13 +31,22 @@ class Worker(Thread):
                 self._usernames_lock.release()
                 break
             self._usernames_lock.release()
+
             try:
-                profile = Profile(username=username, driver=self._driver)
-                if Profile.load(username) is None:
-                    if self._anonymous:
-                        profile.download_profile_picture_anonymous()
-                    else:
-                        profile.parse()
+                profile = Profile.load(username)
+                profile_exists = profile is not None
+
+                if not profile_exists:
+                    profile = Profile(username=username, driver=self._driver)
+                else:
+                    profile.set_driver(self._driver)
+
+                if self._anonymous:
+                    profile.parse_anonymous()
+                else:
+                    profile.parse()
+
+                if profile.changed or not profile_exists:
                     profile.save()
             except:
                 print(f"[ERROR] Parsing ({username})")
