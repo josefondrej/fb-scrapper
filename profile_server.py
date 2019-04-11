@@ -35,7 +35,7 @@ class ProfileServer(object):
     def _friends_going(self, profile: Profile) -> List[str]:
         friends_going = []
         for username in self._usernames:
-            if username in profile.friends:
+            if username in [] or profile.friends:
                 friends_going.append(username)
 
         return friends_going
@@ -84,6 +84,8 @@ class ProfileServer(object):
 
     def _get_profile_keywords(self, profile: Profile) -> Set[str]:
         keywords = set()
+        if profile.information is None:
+            return set()
         for entry in profile.information.entries:
             keywords.update(self._get_entry_keywords(entry))
 

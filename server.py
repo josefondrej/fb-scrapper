@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from config import FB_WWW_REGULAR, PIC_SUFFIX, PROFILE_PIC_DIR
 from fb_objects.public_event import PublicEvent
 from profile_server import ProfileServer
+import utils
 
 app = Flask(__name__)
 
@@ -74,6 +75,10 @@ def argparse() -> str:
 if __name__ == "__main__":
     event_name = argparse()
     public_event = PublicEvent.load(event_name)
-    profile_server = ProfileServer(public_event.all_usernames)
+    if public_event:
+        usernames = public_event.all_usernames
+    else:
+        usernames = utils.list_usernames()
+    profile_server = ProfileServer(usernames)
 
     app.run(debug=True)
