@@ -4,15 +4,20 @@ from typing import List, Tuple
 from fb_objects.profile import Profile
 from fb_objects.public_event import PublicEvent
 from utils import get_driver
+from webdriver_wrapper import WebDriverWrapper
 
 
 class Worker(Thread):
-    def __init__(self, name: str, usernames: List[str], usernames_lock: Lock):
+    def __init__(self, name: str, usernames: List[str], usernames_lock: Lock, anonymous: bool = True):
         Thread.__init__(self)
         self._name = name
         self._usernames = usernames
         self._usernames_lock = usernames_lock
-        self._driver = get_driver()
+        self._anonymous = anonymous
+        if self._anonymous:
+            self._driver = WebDriverWrapper()
+        else:
+            self._driver = get_driver()
         self.daemon = False
 
     def run(self):
@@ -29,9 +34,12 @@ class Worker(Thread):
             try:
                 profile = Profile(username=username, driver=self._driver)
                 if Profile.load(username) is None:
-                    profile.parse()
+                    if self._anonymous:
+                        profile.download_profile_picture_anonymous()
+                    else:
+                        profile.parse()
                     profile.save()
-            except Exception as e:
+            except:
                 print(f"[ERROR] Parsing ({username})")
 
 

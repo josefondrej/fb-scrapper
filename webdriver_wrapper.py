@@ -46,7 +46,7 @@ class WebDriverWrapper(object):
                 src = element.get_attribute("src")
                 request.urlretrieve(url=src, filename=target_file)
                 return True
-            except Exception as e:
+            except:
                 pass
             if time.time() - start > self._max_timeout:
                 return False

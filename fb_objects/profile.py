@@ -4,7 +4,7 @@ from fb_objects.annotation import Annotation
 from utils import parse_usernames
 from config import FB_WWW, INFORMATION_SUFFIX, ALBUMS_SUFFIX, FRIENDS_SUFFIX, NAME_XPATH, PROFILE_PIC_XPATH, \
     PROFILE_PIC_DIR, PIC_SUFFIX, FRIEND_USERNAME_XPATH, NEXT_FRIENDS_XPATH, \
-    MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX, LARGE_PROFILE_PIC_XPATH
+    MAIN_PAGE_SUFFIX, PROFILE_DIR, PROFILE_SUFFIX, LARGE_PROFILE_PIC_XPATH, FB_WWW_REGULAR, PROFILE_PIC_XPATH_ANONYMOUS
 from fb_objects.fb_object import FbObject
 from fb_objects.information import Information
 from fb_objects.album import Album
@@ -71,7 +71,7 @@ class Profile(FbObject):
                       "information": FbObject._magic_serialize(self._information),
                       "albums": FbObject._magic_serialize(self._albums),
                       "friends": self._friends,
-                      "annotation": self._annotation.serialize()}
+                      "annotation": FbObject._magic_serialize(self._annotation)}
 
         return serialized
 
@@ -134,5 +134,13 @@ class Profile(FbObject):
             self._driver.download_image(profile_pic_path, xpath=LARGE_PROFILE_PIC_XPATH)
             self._driver.back()
 
-        except Exception as e:
+        except:
+            print(f"[ERROR] Downloading profile picture ({self._username})")
+
+    def download_profile_picture_anonymous(self):
+        try:
+            profile_pic_path = PROFILE_PIC_DIR + self._username + PIC_SUFFIX
+            self._driver.go_to(FB_WWW_REGULAR + self._username)
+            self._driver.download_image(profile_pic_path, PROFILE_PIC_XPATH_ANONYMOUS)
+        except:
             print(f"[ERROR] Downloading profile picture ({self._username})")

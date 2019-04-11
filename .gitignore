@@ -144,4 +144,4 @@ filters.json
 # Recursive crawler cache
 worker_pool_cache.json
 
-# Specific
+examples/pnlp.py
